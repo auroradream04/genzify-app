@@ -11,8 +11,8 @@ const openai = new OpenAI({
 });
 
 // Ratelimit
-const requestLimit = 2;
-const interval = 20;
+const requestLimit = 3;
+const interval = 15;
 const ratelimit = new Ratelimit({
     redis: kv,
 
@@ -22,9 +22,9 @@ const ratelimit = new Ratelimit({
 
 const cache: { [query: string]: string } = {};
 
-export async function queryGpt(query: string) {
+export async function queryGpt(query: string, isReset = false) {
     // Check if the query is already in the cache
-    if (cache[query]) {
+    if (cache[query] && !isReset) {
         return cache[query];
     }
 

@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@radix-ui/react-label";
 import SuspenseComponent from "./SuspenseComponent";
 import { IoArrowUpCircleOutline } from "react-icons/io5";
+import { MdRestartAlt } from "react-icons/md";
 import AuthorPlug from "./AuthorPlug";
 
 
@@ -15,38 +16,49 @@ export default function QueryGPT() {
     const [query, setQuery] = useState<string>("")
     const [result, setResult] = useState<string>("")
     const [isLoading, setIsLoading] = useState<boolean>(false)
-    
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const [lastQuery, setLastQuery] = useState<string>("")
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement> | React.FormEvent<HTMLButtonElement | MouseEvent>, reset = false) => {
         e.preventDefault()
         setIsLoading(true)
         setResult("")
+        
+        if (query.length === 0 && !reset) {
+            await setTimeout(() => {
+                setResult("Ayo, you gotta write something first my homie 🤷‍♂️")
+                setIsLoading(false)
+                return
+            }, 1000);
+        } else {
+            // Check if the query is flagged for moderation
+            try {
+                const isFlagged = await moderationGpt(query)
 
-        // Check if the query is flagged for moderation
-        try {
-            const isFlagged = await moderationGpt(query)
-
-            if (isFlagged) {
-                setResult("Ayo, we don't do that here. Please keep it clean and respectful.")
+                if (isFlagged) {
+                    setResult("Ayo, we don't do that here. Please keep it clean and respectful. 🙅‍♂️")
+                    setIsLoading(false)
+                    return
+                }
+            } catch (error) {
+                console.error(error)
                 setIsLoading(false)
                 return
             }
-        } catch (error) {
-            console.error(error)
+
+            try {
+                const message = await queryGpt(query, reset)
+
+                setResult(message)
+                setLastQuery(query)
+            } catch (error) {
+                console.error(error)
+                return
+            }
+
             setIsLoading(false)
             return
         }
 
-        try {
-            const message = await queryGpt(query)
-
-            setResult(message)
-            console.log(message)
-        } catch (error) {
-            console.error(error)
-            return
-        }
-
-        setIsLoading(false)
     }
 
     // Highlight code blocks in the result via highlight.js
@@ -63,9 +75,14 @@ export default function QueryGPT() {
                     <Label className="text-white text-sm font-bold">GenZify anything</Label>
                     <div className="flex relative mt-2">
                         <Textarea disabled={isLoading} className="flex-1 w-full px-4 pr-20 py-2 h-[80px] min-h-[80px]" value={query} placeholder="Ayo, what’s the tea? 👀✨" onChange={(e) => setQuery(e.target.value)} />
-                        <button disabled={isLoading} type="submit" className="flex items-center disabled:cursor-not-allowed absolute right-2 bottom-2 justify-center p-2 bg-zinc-800 rounded-md ml-2">
-                            <IoArrowUpCircleOutline className="text-white text-lg" />
-                        </button>
+                        <div className="flex items-center absolute right-2 bottom-2 justify-center">
+                            <button onClick={(e) => handleSubmit(e, true)} disabled={isLoading || lastQuery.length === 0} type="reset" className="disabled:cursor-not-allowed transition disabled:text-[rgb(130,130,130)] text-white p-2 bg-zinc-800 disabled:bg-zinc-900 rounded-md">
+                                <MdRestartAlt className="text-lg" />
+                            </button>
+                            <button disabled={isLoading} type="submit" className="disabled:cursor-not-allowed transition disabled:text-[rgb(130,130,130)] text-white p-2 bg-zinc-800 disabled:bg-zinc-900 rounded-md ml-2">
+                                <IoArrowUpCircleOutline className="text-lg" />
+                            </button>
+                        </div>
                     </div>
                 </div>
                 {

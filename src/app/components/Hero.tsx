@@ -20,7 +20,7 @@ export default function Hero() {
     return (
         <div className="w-full flex justify-center items-center max-w-[800px]">
             <div className="max-w-52 sm:max-w-72 md:max-w-80">
-                <Image src="/giga-chad.png" width={1600} height={1200} alt="Hero" className="w-full" />
+                <Image src="/giga-chad.png" width={1600} height={1200} alt="Giga Chad" className="w-full" />
             </div>
             <div className="flex-1">
                 {/* create a hero title and tagline for this GenZify app (use gen-z language)*/}
