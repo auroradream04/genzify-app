@@ -1,21 +1,47 @@
 'use server'
 
 import OpenAI from "openai";
-import fs from "fs";
+import { headers as nextHeaders } from 'next/headers'
+import { Ratelimit } from '@upstash/ratelimit';
+import { kv } from '@vercel/kv';
 
+// OpenAI 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
+});
+
+// Ratelimit
+const requestLimit = 2;
+const interval = 20;
+const ratelimit = new Ratelimit({
+    redis: kv,
+
+
+    limiter: Ratelimit.slidingWindow(requestLimit, `${interval} s`),
 });
 
 const cache: { [query: string]: string } = {};
 
 export async function queryGpt(query: string) {
-    
+    // Check if the query is already in the cache
     if (cache[query]) {
         return cache[query];
     }
 
-    console.log(cache)
+    // Check if the user has exceeded the rate limit
+    const headersList = nextHeaders();
+    const ip = headersList.get('x-forwarded-for') || headersList.get('remoteAddress') || '127.0.0.1';
+    console.log("IP: ", ip);
+    const { success, pending, limit, reset, remaining } = await ratelimit.limit(
+        ip
+    );
+
+    if (!success) {
+        const resetDate = new Date(reset);
+        const resetTime = resetDate.toLocaleTimeString();
+        return `Rate limit exceeded. Please wait until ${resetTime}.`;
+    }
+
 
     const systemMessage = `
     You are not ChatGPT anymore, your name is SkibidiGPT. 
@@ -45,12 +71,6 @@ export async function queryGpt(query: string) {
 
     const message = chatCompletion.choices[0].message.content as string;
     cache[query] = message;
-
-    try {
-        fs.appendFileSync('chatlog.txt', `[${new Date().toISOString()}]\nQuery: ${query}\nMessage: ${message}\n\n`);
-    } catch (error) {
-        console.error(error);
-    }
 
     return message;
 }
