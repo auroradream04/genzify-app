@@ -31,15 +31,15 @@ export async function queryGpt(query: string, isReset = false) {
     // Check if the user has exceeded the rate limit
     const headersList = nextHeaders();
     const ip = headersList.get('x-forwarded-for') || headersList.get('remoteAddress') || '127.0.0.1';
-    console.log("IP: ", ip);
     const { success, pending, limit, reset, remaining } = await ratelimit.limit(
         ip
     );
 
     if (!success) {
         const resetDate = new Date(reset);
-        const resetTime = resetDate.toLocaleTimeString();
-        return `Rate limit exceeded. Please wait until ${resetTime}.`;
+        const currentTime = new Date();
+        const timeUntilReset = Math.ceil((resetDate.getTime() - currentTime.getTime()) / (1000 * 60)); // Time in minutes until reset
+        return `Ayo, sounds like you hit a wall, fam! 🚧 Just chill for a sec and vibe out while you wait ${timeUntilReset} minutes before sendin' another request. Patience is key, my dude! 💅⏳✨`;
     }
 
 
