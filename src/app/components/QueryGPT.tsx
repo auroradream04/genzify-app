@@ -15,7 +15,7 @@ export default function QueryGPT() {
     const [query, setQuery] = useState<string>("")
     const [result, setResult] = useState<string>("")
     const [isLoading, setIsLoading] = useState<boolean>(false)
-
+    
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setIsLoading(true)
@@ -62,8 +62,8 @@ export default function QueryGPT() {
                 <div className="w-full">
                     <Label className="text-white text-sm font-bold">GenZify anything</Label>
                     <div className="flex relative mt-2">
-                        <Textarea className="flex-1 w-full px-4 pr-20 py-2" value={query} placeholder="Ayo, what’s the tea? 👀✨" onChange={(e) => setQuery(e.target.value)} />
-                        <button type="submit" className="flex items-center absolute right-0 justify-center p-2 bg-zinc-800 rounded-md ml-2">
+                        <Textarea disabled={isLoading} className="flex-1 w-full px-4 pr-20 py-2 h-[80px] min-h-[80px]" value={query} placeholder="Ayo, what’s the tea? 👀✨" onChange={(e) => setQuery(e.target.value)} />
+                        <button disabled={isLoading} type="submit" className="flex items-center disabled:cursor-not-allowed absolute right-2 bottom-2 justify-center p-2 bg-zinc-800 rounded-md ml-2">
                             <IoArrowUpCircleOutline className="text-white text-lg" />
                         </button>
                     </div>
