@@ -2,26 +2,106 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+.gpt-result h1, .gpt-result h2, .gpt-result h3, .gpt-result h4, .gpt-result h5, .gpt-result h6 {
+  @apply font-bold text-xl text-white;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.gpt-result p {
+  @apply text-gray-300 leading-relaxed mb-4;
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+.gpt-result ul {
+  @apply list-disc list-inside ml-5 text-gray-300;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.gpt-result li {
+  @apply mb-2;
+}
+
+.gpt-result pre {
+  @apply bg-gray-800 p-4 rounded-lg overflow-auto shadow-md text-sm;
+}
+
+.gpt-result code {
+  @apply font-mono text-gray-300;
+}
+
+.gpt-result code.language-javascript {
+  @apply block;
+}
+
+/* Syntax highlighting */
+.gpt-result code .token.keyword {
+  @apply text-purple-400;
+}
+
+.gpt-result code .token.function {
+  @apply text-blue-400;
+}
+
+.gpt-result code .token.parameter {
+  @apply text-teal-400;
+}
+
+.gpt-result code .token.string {
+  @apply text-yellow-400;
+}
+
+.gpt-result code .token.number {
+  @apply text-pink-400;
+}
+
+.gpt-result code .token.operator {
+  @apply text-green-400;
+}
+
+.gpt-result code .token.comment {
+  @apply text-gray-500 italic;
+}
+
+
+.hljs-comment,
+.hljs-quote {
+  @apply text-gray-500 italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-subst {
+  @apply text-purple-400;
+}
+
+.hljs-literal,
+.hljs-symbol,
+.hljs-name,
+.hljs-variable {
+  @apply text-yellow-400;
+}
+
+.hljs-string {
+  @apply text-green-400;
+}
+
+.hljs-function .hljs-title {
+  @apply text-blue-400;
+}
+
+.hljs-number {
+  @apply text-pink-400;
+}
+
+.hljs-attr,
+.hljs-attribute {
+  @apply text-teal-400;
+}
+
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-title {
+  @apply text-orange-400;
+}
+
+.hljs-meta,
+.hljs-link {
+  @apply text-indigo-400;
 }

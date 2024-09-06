@@ -13,7 +13,13 @@ const config: Config = {
         foreground: "var(--foreground)",
       },
     },
+    hljs: {
+      theme: 'night-owl',
+    },
   },
-  plugins: [],
+  plugins: [require('tailwind-highlightjs')],
+  safelist: [{
+    pattern: /hljs+/,
+  }],
 };
 export default config;
