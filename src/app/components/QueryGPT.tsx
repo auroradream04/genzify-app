@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@radix-ui/react-label";
 import SuspenseComponent from "./SuspenseComponent";
 import { IoArrowUpCircleOutline } from "react-icons/io5";
+import AuthorPlug from "./AuthorPlug";
 
 
 export default function QueryGPT() {
@@ -58,7 +59,7 @@ export default function QueryGPT() {
     return (
         <div className="w-full justify-center flex">
             <form className="w-full max-w-[800px] min-h-60 rounded-sm" onSubmit={handleSubmit}>
-                <div className="w-full mb-4">
+                <div className="w-full">
                     <Label className="text-white text-sm font-bold">GenZify anything</Label>
                     <div className="flex relative mt-2">
                         <Textarea className="flex-1 w-full px-4 pr-20 py-2" value={query} placeholder="Ayo, what’s the tea? 👀✨" onChange={(e) => setQuery(e.target.value)} />
@@ -69,12 +70,13 @@ export default function QueryGPT() {
                 </div>
                 {
                     result ?
-                        <div className="w-full">
+                        <div className="w-full mt-4">
                             <Label className="text-white text-sm font-bold">Response</Label>
                             <ReactMarkdown className="mt-2 w-full text-sm gpt-result px-3 py-2 border-zinc-800 border rounded-md">{result}</ReactMarkdown>
                         </div>
                         : isLoading ? <SuspenseComponent /> : null
                 }
+                <AuthorPlug />
             </form>
         </div>
     )
