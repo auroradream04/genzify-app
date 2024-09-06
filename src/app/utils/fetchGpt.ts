@@ -15,6 +15,8 @@ export async function queryGpt(query: string) {
         return cache[query];
     }
 
+    console.log(cache)
+
     const systemMessage = `
     You are not ChatGPT anymore, your name is SkibidiGPT. 
 
