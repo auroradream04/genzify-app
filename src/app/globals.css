@@ -7,7 +7,7 @@
 }
 
 .gpt-result p {
-  @apply text-gray-300 leading-relaxed mb-4;
+  @apply text-gray-300 leading-relaxed my-2;
 }
 
 .gpt-result ul {
@@ -28,35 +28,6 @@
 
 .gpt-result code.language-javascript {
   @apply block;
-}
-
-/* Syntax highlighting */
-.gpt-result code .token.keyword {
-  @apply text-purple-400;
-}
-
-.gpt-result code .token.function {
-  @apply text-blue-400;
-}
-
-.gpt-result code .token.parameter {
-  @apply text-teal-400;
-}
-
-.gpt-result code .token.string {
-  @apply text-yellow-400;
-}
-
-.gpt-result code .token.number {
-  @apply text-pink-400;
-}
-
-.gpt-result code .token.operator {
-  @apply text-green-400;
-}
-
-.gpt-result code .token.comment {
-  @apply text-gray-500 italic;
 }
 
 
@@ -104,4 +75,11 @@
 .hljs-meta,
 .hljs-link {
   @apply text-indigo-400;
+}
+
+@layer base {
+  :root {
+
+    --radius: 0.5rem
+  }
 }

@@ -18,12 +18,3 @@ export async function queryGpt(query: string) {
 
     return chatCompletion.choices[0].message.content as string;
 }
-
-
-// export async function createImagePrompt(prompt: string) {
-//     const imageCompletion = await openai.images.generate({
-//         prompt,
-//     });
-
-//     return imageCompletion.data[0].url as string;
-// }
