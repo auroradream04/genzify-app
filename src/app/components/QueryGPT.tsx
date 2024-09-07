@@ -30,9 +30,11 @@ export default function QueryGPT() {
                 return
             }, 1000);
         } else {
+            const chatQuery = reset ? lastQuery : query
+
             // Check if the query is flagged for moderation
             try {
-                const isFlagged = await moderationGpt(query)
+                const isFlagged = await moderationGpt(chatQuery)
 
                 if (isFlagged) {
                     setResult("Ayo, we don't do that here. Please keep it clean and respectful. 🙅‍♂️")
@@ -46,10 +48,10 @@ export default function QueryGPT() {
             }
 
             try {
-                const message = await queryGpt(query, reset)
+                const message = await queryGpt(chatQuery)
 
                 setResult(message)
-                setLastQuery(query)
+                setLastQuery(chatQuery)
             } catch (error) {
                 console.error(error)
                 return
@@ -89,7 +91,7 @@ export default function QueryGPT() {
                     result ?
                         <div className="w-full mt-4">
                             <Label className="text-white text-sm font-bold">Response</Label>
-                            <ReactMarkdown className="mt-2 w-full text-sm gpt-result px-3 py-2 border-zinc-800 border rounded-md">{result}</ReactMarkdown>
+                            <ReactMarkdown className="mt-2 h-full w-full text-sm gpt-result px-3 py-2 border-zinc-800 border rounded-md">{result}</ReactMarkdown>
                         </div>
                         : isLoading ? <SuspenseComponent /> : null
                 }

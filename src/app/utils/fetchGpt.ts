@@ -22,9 +22,9 @@ const ratelimit = new Ratelimit({
 
 const cache: { [query: string]: string } = {};
 
-export async function queryGpt(query: string, isReset = false) {
+export async function queryGpt(query: string) {
     // Check if the query is already in the cache
-    if (cache[query] && !isReset) {
+    if (cache[query]) {
         return cache[query];
     }
 
