@@ -87,8 +87,6 @@ export const queryGpt = async (query: string, conversationHistory: ChatCompletio
         content: query
     });
 
-    console.log(conversationHistory);
-
     // Call the OpenAI API with the conversation history
     const chatCompletion = await openai.chat.completions.create({
         model: "gpt-4o-mini",
@@ -103,6 +101,8 @@ export const queryGpt = async (query: string, conversationHistory: ChatCompletio
         role: "assistant",
         content: message
     });
+
+    console.log("QUERY: " + query + "\nRESPONSE: " + message + "\n");
 
     // Return the AI's response
     return message;

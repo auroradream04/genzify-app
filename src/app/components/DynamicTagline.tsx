@@ -26,7 +26,7 @@ export default function DynamicTagline({ taglines }: TProps) {
     }, [taglineRef])
 
     return (
-        <div className="w-full max-w-[320px] leading-5 mb-1">
+        <div className="w-full px-16 sm:px-0 sm:max-w-[320px] leading-5 mb-1 text-center sm:text-start">
             <span ref={taglineRef} className="text-sm mr-1"></span>
         </div>
     )

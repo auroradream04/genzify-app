@@ -144,7 +144,7 @@ export default function QueryGPT() {
     const randomPlaceholder = queryPlaceholderList[Math.floor(Math.random() * queryPlaceholderList.length)]
 
     return (
-        <div className="w-full justify-center flex">
+        <div className="w-full justify-center flex translate-y-10 sm:translate-y-0 sm:static">
             <form className="w-full max-w-[800px] min-h-60 rounded-sm" onSubmit={handleSubmit}>
                 <div className="w-full">
                     <Label className="text-white text-sm font-bold">GenZify anything</Label>

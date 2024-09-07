@@ -18,15 +18,19 @@ export default function Hero() {
 
 
     return (
-        <div className="w-full flex justify-center items-center max-w-[800px]">
-            <div className="max-w-52 sm:max-w-72 md:max-w-80">
+        <div className="w-full flex flex-wrap sm:flex-nowrap justify-center max-w-[800px]">
+            <div className="max-w-40 sm:max-w-72 md:max-w-80">
                 <Image src="/giga-chad.png" width={1600} height={1200} alt="Giga Chad" className="w-full" />
             </div>
-            <div className="flex-1">
+            <div className="sm:mt-20 md:mt-24 w-full min-h-28">
                 {/* create a hero title and tagline for this GenZify app (use gen-z language)*/}
-                <h1 className="text-4xl font-bold text-white mb-1">{title}</h1>
-                <DynamicTagline taglines={taglines} />
-                <p className="text-[9px] uppercase text-[rgb(150,150,150)]">Powered by AI 🤖✨</p>
+                <div className="w-full text-center sm:text-start">
+                    <h1 className="text-4xl font-bold text-white mb-1">{title}</h1>
+                </div>
+                <div className="w-full">
+                    <DynamicTagline taglines={taglines} />
+                    <p className="text-[9px] uppercase text-[rgb(150,150,150)] text-center sm:text-start">Powered by AI 🤖✨</p>
+                </div>
             </div>
         </div>
     )
