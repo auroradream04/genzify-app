@@ -1,20 +1,20 @@
 'use client'
 
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { moderationGpt, queryGpt } from "../utils/fetchGpt"
 import ReactMarkdown from 'react-markdown';
 import hljs from "highlight.js";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@radix-ui/react-label";
 import SuspenseComponent from "./SuspenseComponent";
-import { IoArrowUpCircleOutline } from "react-icons/io5";
+import { IoArrowUpCircleOutline, IoCopyOutline } from "react-icons/io5";
 import { MdRestartAlt } from "react-icons/md";
 import AuthorPlug from "./AuthorPlug";
 
 
 export default function QueryGPT() {
     const [query, setQuery] = useState<string>("")
-    const [result, setResult] = useState<string>("")
+    const [result, setResult] = useState<string>("1")
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [lastQuery, setLastQuery] = useState<string>("")
 
@@ -22,7 +22,7 @@ export default function QueryGPT() {
         e.preventDefault()
         setIsLoading(true)
         setResult("")
-        
+
         if (query.length === 0 && !reset) {
             await setTimeout(() => {
                 setResult("Ayo, you gotta write something first my homie 🤷‍♂️")
@@ -30,6 +30,7 @@ export default function QueryGPT() {
                 return
             }, 1000);
         } else {
+            // Use the last query if the reset button is clicked
             const chatQuery = reset ? lastQuery : query
 
             // Check if the query is flagged for moderation
@@ -63,12 +64,21 @@ export default function QueryGPT() {
 
     }
 
+    const handleCopy = (e: React.FormEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        navigator.clipboard.writeText(result).then(() => {
+            alert('Text copied to clipboard!');
+        }).catch(err => {
+            console.error('Failed to copy text: ', err);
+        });
+    };
+
     // Highlight code blocks in the result via highlight.js
     useEffect(() => {
         hljs.highlightAll();
     }, [result]);
 
-    // What's a good GenZ placeholder for the textarea below? > not this > genzify it > 
+    const buttonCss = "p-1.5 disabled:cursor-not-allowed transition disabled:text-[rgb(130,130,130)] text-white bg-zinc-800 disabled:bg-zinc-900 rounded-md"
 
     return (
         <div className="w-full justify-center flex">
@@ -78,10 +88,7 @@ export default function QueryGPT() {
                     <div className="flex relative mt-2">
                         <Textarea disabled={isLoading} className="flex-1 w-full px-4 pr-20 py-2 h-[80px] min-h-[80px]" value={query} placeholder="Ayo, what’s the tea? 👀✨" onChange={(e) => setQuery(e.target.value)} />
                         <div className="flex items-center absolute right-2 bottom-2 justify-center">
-                            <button onClick={(e) => handleSubmit(e, true)} disabled={isLoading || lastQuery.length === 0} type="reset" className="disabled:cursor-not-allowed transition disabled:text-[rgb(130,130,130)] text-white p-2 bg-zinc-800 disabled:bg-zinc-900 rounded-md">
-                                <MdRestartAlt className="text-lg" />
-                            </button>
-                            <button disabled={isLoading} type="submit" className="disabled:cursor-not-allowed transition disabled:text-[rgb(130,130,130)] text-white p-2 bg-zinc-800 disabled:bg-zinc-900 rounded-md ml-2">
+                            <button disabled={isLoading} type="submit" className={`${buttonCss} p-2`}>
                                 <IoArrowUpCircleOutline className="text-lg" />
                             </button>
                         </div>
@@ -92,6 +99,14 @@ export default function QueryGPT() {
                         <div className="w-full mt-4">
                             <Label className="text-white text-sm font-bold">Response</Label>
                             <ReactMarkdown className="mt-2 h-full w-full text-sm gpt-result px-3 py-2 border-zinc-800 border rounded-md">{result}</ReactMarkdown>
+                            <div className="flex items-center mt-2 text-[13px]">
+                                <button onClick={handleCopy} className={`${buttonCss} mr-1`}>
+                                    <IoCopyOutline size={14} className="-scale-x-100" />
+                                </button>
+                                <button onClick={(e) => handleSubmit(e, true)} disabled={isLoading || lastQuery.length === 0} type="reset" className={`${buttonCss}`}>
+                                    <MdRestartAlt size={14} className="" />
+                                </button>
+                            </div>
                         </div>
                         : isLoading ? <SuspenseComponent /> : null
                 }
