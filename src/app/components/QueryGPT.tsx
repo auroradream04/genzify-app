@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import { moderationGpt, queryGpt } from "../utils/fetchGpt"
 import ReactMarkdown from 'react-markdown';
 import hljs from "highlight.js";
@@ -64,6 +64,7 @@ export default function QueryGPT() {
 
     }
 
+    // Copy the result to the clipboard
     const handleCopy = (e: React.FormEvent<HTMLButtonElement>) => {
         e.preventDefault();
         navigator.clipboard.writeText(result).then(() => {
@@ -72,6 +73,21 @@ export default function QueryGPT() {
             console.error('Failed to copy text: ', err);
         });
     };
+
+    // Automatically grow the textarea as the user types
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const maxHeight = 200;
+
+    const autoGrow = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        if (textareaRef.current && textareaRef.current.scrollHeight < maxHeight && textareaRef.current.scrollHeight > textareaRef.current.clientHeight) {
+            textareaRef.current.style.height = "auto";
+            textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+        }
+    }
+
+    useEffect(() => {
+        autoGrow({ target: textareaRef.current! } as React.ChangeEvent<HTMLTextAreaElement>)
+    }, [query])
 
     // Highlight code blocks in the result via highlight.js
     useEffect(() => {
@@ -86,7 +102,7 @@ export default function QueryGPT() {
                 <div className="w-full">
                     <Label className="text-white text-sm font-bold">GenZify anything</Label>
                     <div className="flex relative mt-2">
-                        <Textarea disabled={isLoading} className="flex-1 w-full px-4 pr-20 py-2 h-[80px] min-h-[80px]" value={query} placeholder="Ayo, what’s the tea? 👀✨" onChange={(e) => setQuery(e.target.value)} />
+                        <Textarea ref={textareaRef} disabled={isLoading} className="flex-1 w-full px-4 pr-20 py-2 h-[80px] min-h-[80px]" value={query} placeholder="Ayo, what’s the tea? 👀✨" onChange={(e) => setQuery(e.target.value)} />
                         <div className="flex items-center absolute right-2 bottom-2 justify-center">
                             <button disabled={isLoading} type="submit" className={`${buttonCss} p-2`}>
                                 <IoArrowUpCircleOutline className="text-lg" />
