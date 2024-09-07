@@ -83,3 +83,23 @@
     --radius: 0.5rem
   }
 }
+
+/* Hide scrollbar in WebKit-based browsers (Chrome, Safari) */
+textarea::-webkit-scrollbar {
+  display: none; /* Hide scrollbar */
+}
+
+/* For Firefox, hide scrollbar while allowing resize */
+textarea {
+  scrollbar-width: none; /* Hide scrollbar in Firefox */
+}
+
+/* Optional: Custom styling for the scrollbar if you ever want it back */
+textarea::-webkit-scrollbar {
+  width: 8px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background-color: #444; /* Dark scrollbar thumb */
+  border-radius: 10px;
+}
