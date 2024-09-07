@@ -10,6 +10,7 @@ import SuspenseComponent from "./SuspenseComponent";
 import { IoArrowUpCircleOutline, IoCopyOutline } from "react-icons/io5";
 import { MdRestartAlt } from "react-icons/md";
 import AuthorPlug from "./AuthorPlug";
+import { toast } from "sonner";
 
 
 export default function QueryGPT() {
@@ -26,6 +27,12 @@ export default function QueryGPT() {
         if (query.length === 0 && !reset) {
             await setTimeout(() => {
                 setResult("Ayo, you gotta write something first my homie 🤷‍♂️")
+                toast.error('Please don\'t leave the query blank homie 🗿', {
+                    description: 'You can’t just leave me hanging like that, fam! 🤨',
+                    classNames: {
+                        icon: "text-red-700",
+                    }
+                });
                 setIsLoading(false)
                 return
             }, 1000);
@@ -39,6 +46,12 @@ export default function QueryGPT() {
 
                 if (isFlagged) {
                     setResult("Ayo, we don't do that here. Please keep it clean and respectful. 🙅‍♂️")
+                    toast.error('Please keep it clean and respectful 🚫', {
+                        description: 'We don’t do that here, fam! 🙅‍♂️',
+                        classNames: {
+                            icon: "text-red-700",
+                        }
+                    });
                     setIsLoading(false)
                     return
                 }
@@ -68,7 +81,9 @@ export default function QueryGPT() {
     const handleCopy = (e: React.FormEvent<HTMLButtonElement>) => {
         e.preventDefault();
         navigator.clipboard.writeText(result).then(() => {
-            alert('Text copied to clipboard!');
+            toast.success('Copied to clipboard! 📋', {
+                description: 'You can flex that result wherever you want, fam! ✨💅'
+            });
         }).catch(err => {
             console.error('Failed to copy text: ', err);
         });
