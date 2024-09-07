@@ -11,6 +11,7 @@ import { IoArrowUpCircleOutline, IoCopyOutline } from "react-icons/io5";
 import { MdRestartAlt } from "react-icons/md";
 import AuthorPlug from "./AuthorPlug";
 import { toast } from "sonner";
+import { getConversationHistory } from "../utils/localStorage";
 
 
 export default function QueryGPT() {
@@ -62,8 +63,21 @@ export default function QueryGPT() {
             }
 
             try {
-                const message = await queryGpt(chatQuery)
+                // Get conversation history from localStorage
+                let conversationHistory = getConversationHistory();
 
+                // Get the response from the GPT model
+                const message = await queryGpt(chatQuery, conversationHistory)
+
+                // Save the updated conversation history to localStorage
+                conversationHistory.push({
+                    role: "assistant",
+                    content: `QUERY: ${query}\nRESPONSE: ${message}`
+                })
+
+                localStorage.setItem('conversationHistory', JSON.stringify(conversationHistory));
+
+                // Set the result and last query
                 setResult(message)
                 setLastQuery(chatQuery)
             } catch (error) {
@@ -111,13 +125,31 @@ export default function QueryGPT() {
 
     const buttonCss = "p-1.5 disabled:cursor-not-allowed transition disabled:text-[rgb(130,130,130)] text-white bg-zinc-800 disabled:bg-zinc-900 rounded-md"
 
+    // Random placeholder for the query input
+    const queryPlaceholderList = [
+        "Ayo, what’s the tea? 👀✨",
+        "What’s the vibe check today? 🎉🕺",
+        "Spill the tea, I’m all ears! 🍵👀",
+        "What’s poppin’ in your world? 🌍✨",
+        "Hit me with your hot takes! 🔥💬",
+        "What’s the scoop, fam? 🥤🤩",
+        "Lay it on me, no cap! 📣💯",
+        "911, what's your emergency? 📞🚑",
+        "Got any juicy deets to share? 🍑🤭",
+        "What’s the mood today? 💖🌈",
+        "Hit me with some fire words! 🔥🔥",
+        "Mix, match, and make it vibe! 🎉💥 Which one’s your fave?",
+    ]
+    
+    const randomPlaceholder = queryPlaceholderList[Math.floor(Math.random() * queryPlaceholderList.length)]
+
     return (
         <div className="w-full justify-center flex">
             <form className="w-full max-w-[800px] min-h-60 rounded-sm" onSubmit={handleSubmit}>
                 <div className="w-full">
                     <Label className="text-white text-sm font-bold">GenZify anything</Label>
                     <div className="flex relative mt-2">
-                        <Textarea ref={textareaRef} disabled={isLoading} className="flex-1 w-full px-4 pr-20 py-2 h-[80px] min-h-[80px]" value={query} placeholder="Ayo, what’s the tea? 👀✨" onChange={(e) => setQuery(e.target.value)} />
+                        <Textarea ref={textareaRef} disabled={isLoading} className="flex-1 w-full px-4 pr-20 py-2 h-[80px] min-h-[80px]" value={query} placeholder={randomPlaceholder} onChange={(e) => setQuery(e.target.value)} />
                         <div className="flex items-center absolute right-2 bottom-2 justify-center">
                             <button disabled={isLoading} type="submit" className={`${buttonCss} p-2`}>
                                 <IoArrowUpCircleOutline className="text-lg" />
