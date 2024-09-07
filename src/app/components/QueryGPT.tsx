@@ -14,7 +14,7 @@ import AuthorPlug from "./AuthorPlug";
 
 export default function QueryGPT() {
     const [query, setQuery] = useState<string>("")
-    const [result, setResult] = useState<string>("1")
+    const [result, setResult] = useState<string>("")
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [lastQuery, setLastQuery] = useState<string>("")
 
