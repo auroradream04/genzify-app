@@ -64,18 +64,18 @@ export default function QueryGPT() {
 
             try {
                 // Get conversation history from localStorage
-                let conversationHistory = getConversationHistory();
+                // let conversationHistory = getConversationHistory();
 
                 // Get the response from the GPT model
-                const message = await queryGpt(chatQuery, conversationHistory)
+                const message = await queryGpt(chatQuery, [])
 
                 // Save the updated conversation history to localStorage
-                conversationHistory.push({
-                    role: "assistant",
-                    content: `QUERY: ${query}\nRESPONSE: ${message}`
-                })
+                // conversationHistory.push({
+                //     role: "assistant",
+                //     content: `QUERY: ${query}\nRESPONSE: ${message}`
+                // })
 
-                localStorage.setItem('conversationHistory', JSON.stringify(conversationHistory));
+                // localStorage.setItem('conversationHistory', JSON.stringify(conversationHistory));
 
                 // Set the result and last query
                 setResult(message)
