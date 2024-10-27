@@ -25,10 +25,8 @@ export const metadata: Metadata = {
         type: "website",
         siteName: process.env.NEXT_PUBLIC_TITLE,
         locale: "en_US",
-    }
+    },
 };
-
-
 
 export default function RootLayout({
     children,
@@ -38,14 +36,30 @@ export default function RootLayout({
     return (
         <html lang="en" className="dark">
             <Statistics />
-            <body className={`${geistSans.className} ${geistMono.variable} antialiased bg-[rgb(3,3,4)] text-[rgb(220,220,220)]`}>
+            {
+                process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN && (
+                <head>
+                    <script
+                        defer
+                        data-domain={process.env.NEXT_PUBLIC_BASE_DOMAIN}
+                        src={process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN}
+                    ></script>
+                    </head>
+                )
+            }
+            <body
+                className={`${geistSans.className} ${geistMono.variable} antialiased bg-[rgb(3,3,4)] text-[rgb(220,220,220)]`}
+            >
                 {children}
             </body>
-            <Toaster theme="dark" toastOptions={{
-                classNames: {
-                    description: "text-xs text-red-500 dark:text-gray-400",
-                }
-            }} />
-        </html >
+            <Toaster
+                theme="dark"
+                toastOptions={{
+                    classNames: {
+                        description: "text-xs text-red-500 dark:text-gray-400",
+                    },
+                }}
+            />
+        </html>
     );
 }
