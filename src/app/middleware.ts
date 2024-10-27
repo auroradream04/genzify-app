@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { ipAddress } from "@vercel/functions";
 import { Ratelimit } from '@upstash/ratelimit';
 import { kv } from '@vercel/kv';
 
@@ -17,7 +18,7 @@ export const config = {
 
 export default async function middleware(request: NextRequest) {
   // You could alternatively limit based on user ID or similar
-  const ip = request.ip ?? '127.0.0.1';
+  const ip = ipAddress(request) ?? '127.0.0.1';
   const { success, pending, limit, reset, remaining } = await ratelimit.limit(
     ip
   );

@@ -43,7 +43,7 @@ These guidelines are to be followed strictly at all times. `
 
 // Check if the user has exceeded the rate limit
 const checkRateLimit = async () => {
-    const headersList = nextHeaders();
+    const headersList = await nextHeaders();
     const ip = headersList.get('x-forwarded-for') || headersList.get('remoteAddress') || '127.0.0.1';
     const rateLimit = await ratelimit.limit(ip)
 

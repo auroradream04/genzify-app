@@ -11,10 +11,9 @@ import { IoArrowUpCircleOutline, IoCopyOutline } from "react-icons/io5";
 import { MdRestartAlt } from "react-icons/md";
 import AuthorPlug from "./AuthorPlug";
 import { toast } from "sonner";
-import { getConversationHistory } from "../utils/localStorage";
 
 
-export default function QueryGPT() {
+export default function QueryGPT({ placeholder }: { placeholder: string }) {
     const [query, setQuery] = useState<string>("")
     const [result, setResult] = useState<string>("")
     const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -125,23 +124,6 @@ export default function QueryGPT() {
 
     const buttonCss = "p-1.5 disabled:cursor-not-allowed transition disabled:text-[rgb(130,130,130)] text-white bg-zinc-800 disabled:bg-zinc-900 rounded-md"
 
-    // Random placeholder for the query input
-    const queryPlaceholderList = [
-        "Ayo, what’s the tea? 👀✨",
-        "What’s the vibe check today? 🎉🕺",
-        "Spill the tea, I’m all ears! 🍵👀",
-        "What’s poppin’ in your world? 🌍✨",
-        "Hit me with your hot takes! 🔥💬",
-        "What’s the scoop, fam? 🥤🤩",
-        "Lay it on me, no cap! 📣💯",
-        "911, what's your emergency? 📞🚑",
-        "Got any juicy deets to share? 🍑🤭",
-        "What’s the mood today? 💖🌈",
-        "Hit me with some fire words! 🔥🔥",
-        "Mix, match, and make it vibe! 🎉💥 Which one’s your fave?",
-    ]
-    
-    const randomPlaceholder = queryPlaceholderList[Math.floor(Math.random() * queryPlaceholderList.length)]
 
     return (
         <div className="w-full justify-center flex translate-y-10 sm:translate-y-0 sm:static">
@@ -149,7 +131,7 @@ export default function QueryGPT() {
                 <div className="w-full">
                     <Label className="text-white text-sm font-bold">GenZify anything</Label>
                     <div className="flex relative mt-2">
-                        <Textarea ref={textareaRef} disabled={isLoading} className="flex-1 w-full px-4 pr-20 py-2 h-[80px] min-h-[80px]" value={query} placeholder={randomPlaceholder} onChange={(e) => setQuery(e.target.value)} />
+                        <Textarea ref={textareaRef} disabled={isLoading} className="flex-1 w-full px-4 pr-20 py-2 h-[80px] min-h-[80px]" value={query} placeholder={placeholder} onChange={(e) => setQuery(e.target.value)} />
                         <div className="flex items-center absolute right-2 bottom-2 justify-center">
                             <button disabled={isLoading} type="submit" className={`${buttonCss} p-2`}>
                                 <IoArrowUpCircleOutline className="text-lg" />
