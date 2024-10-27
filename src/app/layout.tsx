@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Statistics from "./components/Statistics";
 import { Toaster } from "sonner";
+import Plausible from "./components/Plausible";
 
 const geistSans = localFont({
     src: "./fonts/GeistVF.woff",
@@ -36,17 +37,9 @@ export default function RootLayout({
     return (
         <html lang="en" className="dark">
             <Statistics />
-            {
-                process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN && (
-                <head>
-                    <script
-                        defer
-                        data-domain={process.env.NEXT_PUBLIC_BASE_DOMAIN}
-                        src={process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN}
-                    ></script>
-                    </head>
-                )
-            }
+            {process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN && (
+                <Plausible />
+            )}
             <body
                 className={`${geistSans.className} ${geistMono.variable} antialiased bg-[rgb(3,3,4)] text-[rgb(220,220,220)]`}
             >
